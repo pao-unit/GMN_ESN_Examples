@@ -3,9 +3,9 @@
 
 ### Generative Manifold Networks (GMN)
 ---
-Requires [gmn](https://github.com/NonlinearDynamicsDSU/gmn). Documentation with examples: ([documentation](https://nonlineardynamicsdsu.github.io/gmn/))
+Requires python package [gmn](https://github.com/NonlinearDynamicsDSU/gmn), see [Documentation](https://nonlineardynamicsdsu.github.io/gmn/).
 
-Requires [pyEDM](https://github.com/SugiharaLab/pyEDM). Documentation with examples: ([documentation](https://sugiharalab.github.io/EDM_Documentation/)).
+Requires python package [pyEDM](https://github.com/SugiharaLab/pyEDM), see [Documentation](https://sugiharalab.github.io/EDM_Documentation/).
 
 ---
 #### Lorenz'63
