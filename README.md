@@ -1,4 +1,3 @@
-# NeurIPS25_GMN_ESN
 ## Code and data for Lorenz'63 and Drosophila GMN/ESN
 
 ### Generative Manifold Networks (GMN)
