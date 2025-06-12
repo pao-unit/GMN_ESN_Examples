@@ -37,6 +37,10 @@ nx.draw(G,with_labels=True,font_size=16,
 plt.show()
 ```
 
+---
+![GMN_Network_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_Network_Lorenz3D.png)
+---
+
 Run GMN without a config file using the GMN application RunNoConfig.py. Parameters: E=3, tau=-7, taget node V3, GMN network file Lorenz3D_tgtV3_2.pkl, data file Lorenz3D_4k.csv. Start generation at index 2000, generate 1000 values.
 
 ```
@@ -45,10 +49,19 @@ Run GMN without a config file using the GMN application RunNoConfig.py. Paramete
 -tau -7 -o GMN_E3_tau-7_pS_2000_pL_1000.csv -PC V3 V1 V2 -P
 ```
 
+---
+![GMN_Generated_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_Generated_Lorenz3D.png)
+---
+
+
 Plot generated dynamics and RMSE with PlotGMN.py application.
 ```
 ./PlotGMN.py
 ```
+
+---
+![GMN_Generated_RMSE_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_Generated_RMSE_Lorenz3D.png)
+---
 
 #### ESN
 
@@ -68,11 +81,20 @@ cd ../ESN
 -o ESN_R3000_Lorenz3D_pS_2000_pL_1000.csv -P
 ```
 
+---
+![ESN_R1000_Generated_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/ESN_R1000_Generated_Lorenz3D.png)
+---
+
+
 Plot 1000 node generated dynamics and RMSE with PlotGMN.py application.
 ```
 ../GMN/PlotGMN.py -i ../ESN/ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv \
 -gv V1_ V2_ V3_ --title "ESN 1000"
 ```
+
+---
+![GMN_ESN_Generated_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_ESN_Generated_Lorenz3D.png)
+---
 
 #### Plot 3D dynamics
 ```
@@ -105,6 +127,11 @@ ax3.plot( esnR2000['V1_'], esnR2000['V2_'], esnR2000['V3_'] )
 ax4.plot( esnR3000['V1_'], esnR3000['V2_'], esnR3000['V3_'] )
 plt.show()
 ```
+
+---
+![ESN_R1000_Generated_PlotGMN_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/ESN_R1000_Generated_PlotGMN_Lorenz3D.png)
+---
+
 
 #### Plot PSD
 
@@ -140,6 +167,11 @@ plt.show()
 ```
 
 ---
+![GMN_ESN_PSD_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_ESN_PSD_Lorenz3D.png)
+---
+
+
+---
 ### Drosophila
 ---
 
@@ -172,6 +204,11 @@ nx.draw_kamada_kawai(G,with_labels=True,alpha=0.7,font_size=16,
 plt.show()
 ```
 
+---
+![GMN_Network_Drosophila](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_Network_Drosophila.png)
+---
+
+
 Run GMN on target node FWD with Tp 1 -E 7 -tau -8
 ```
 ./RunNoConfig.py -pS 580 -pL 480 -PT index -tn FWD \
@@ -180,6 +217,11 @@ Run GMN on target node FWD with Tp 1 -E 7 -tau -8
 -Tp 1 -E 7 -tau -8 -do GMN_Fly80_1061_rhoDiff_D4_E7_tau-8.csv \
 -PC FWD TS2 TS30 -P
 ```
+
+---
+![GMN_Generated_Drosophila](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_Generated_Drosophila.png)
+---
+
 
 ---
 #### ESN
@@ -200,6 +242,11 @@ TS77 TS78 TS79 TS80 FWD -t 1 500 -b 100 -e 601 1000 -R 3000 \
 -o ESN_Fly80_1061.csv -P
 ```
 
+---
+![ESN_Generated_Drosophila](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/ESN_Generated_Drosophila.png)
+---
+
+
 #### Plot results
 ```
 cd ..
@@ -216,3 +263,8 @@ gmn.plot('index','FWD',ax=ax,lw=2,label='GMN')  # GMN
 esn.plot('index','FWD_',ax=ax,lw=2,label='ESN') # ESN
 plt.show()
 ```
+
+---
+![GMN_ESN_DrosophilaFWD_Generate](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_ESN_DrosophilaFWD_Generate.png)
+---
+
