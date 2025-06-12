@@ -93,7 +93,7 @@ Plot 1000 node generated dynamics and RMSE with PlotGMN.py application.
 ```
 
 ---
-![GMN_ESN_Generated_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_ESN_Generated_Lorenz3D.png)
+![ESN_R1000_Generated_PlotGMN_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/ESN_R1000_Generated_PlotGMN_Lorenz3D.png)
 ---
 
 #### Plot 3D dynamics
@@ -129,7 +129,7 @@ plt.show()
 ```
 
 ---
-![ESN_R1000_Generated_PlotGMN_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/ESN_R1000_Generated_PlotGMN_Lorenz3D.png)
+![GMN_ESN_Generated_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_ESN_Generated_Lorenz3D.png)
 ---
 
 
