@@ -130,16 +130,16 @@ def main():
             ax.plot(timeGen, generated[:, i_], label = "ESN",
                     color = 'darkorange', linestyle = '--', lw = 3)
 
-            ax.axvline( x = time[ args.train[1] + args.burnIn ],
-                        color="red", lw = 2 )
+            ax.axvline( x = time[ args.train[1] ],
+                        color="red", lw = 3 )
             ax.set_ylabel( label, fontsize = 12 )
             ax.legend( loc = "lower left", fontsize = 12 )
             ax.tick_params( axis = 'both', labelsize = 12 )
 
         ax = axes[3]
         ax.plot(timeGen, rmse, label = "RMSE", color = 'brown', lw = 3)
-        ax.axvline( x = time[ args.train[1] + args.burnIn ],
-                    color="red", lw = 2 )
+        ax.axvline( x = time[ args.train[1] ],
+                    color="red", lw = 3 )
         ax.set_ylabel( "RMSE", fontsize = 12 )
         ax.tick_params( axis='both', labelsize = 12 )
         ax.set_xlabel( args.timeVar, fontsize = 12 )
@@ -155,7 +155,7 @@ def ParseCmdLine():
 
     parser.add_argument('-i', '--inFile',
                         dest   = 'inFile', type = str, 
-                        action = 'store',  default = 'data/Lorenz3D_4k.csv',
+                        action = 'store',  default = 'data/Lorenz3D.csv',
                         help = '.csv data file')
 
     parser.add_argument('-o', '--outFile',
