@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 
-<<<<<<< HEAD
 # Python distribution modules
 import argparse, pickle
 from   datetime           import datetime
@@ -17,29 +16,13 @@ from   pandas import DataFrame
 
 from   pyEDM import CCM, Simplex, ComputeError, PredictNonlinear
 from   pyEDM import __version__ as pyEDM_version
-=======
-import time, argparse, pickle
-from   math            import nan
-from   itertools       import combinations_with_replacement, repeat
-from   multiprocessing import Pool
-
-import matplotlib.pyplot as plt
-from   numpy  import zeros, full, corrcoef, amax, min, max, abs, maximum
-from   numpy  import linspace, quantile
-from   pandas import read_csv, DataFrame
-
-from   pyEDM import CCM, Simplex, ComputeError, PredictNonlinear
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 from   sklearn.linear_model      import LinearRegression
 from   sklearn.feature_selection import mutual_info_regression as MI
 from   statsmodels.distributions.empirical_distribution import ECDF
 
-<<<<<<< HEAD
 # Local modules 
 from gmn.Auxiliary import ReadDataFrame
 
-=======
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 #----------------------------------------------------------------------------
 # Main module
 #----------------------------------------------------------------------------
@@ -123,29 +106,17 @@ def main():
        Note: EDM presumes 1st data column is time.
     '''
 
-<<<<<<< HEAD
     startTime = datetime.now()
-=======
-    startTime = time.time()
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 
     args = ParseCmdLine()
 
     if args.verbose: print( args )
 
-<<<<<<< HEAD
     # Read data from args.dataFile
     if len( args.dataColumns ) :
         data = ReadDataFrame( args.dataFile, usecols = args.dataColumns )
     else:
         data = ReadDataFrame( args.dataFile )
-=======
-    # Read data from args.dataFile .csv format
-    if len( args.dataColumns ) :
-        data = read_csv( args.dataFile, usecols = args.dataColumns )
-    else:
-        data = read_csv( args.dataFile )
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 
     args.numCols = N = len( data.columns )
     args.numRows = data.shape[0]
@@ -158,7 +129,6 @@ def main():
     # computes both CCM(i,j) and CCM(j,i); Start at 1 to skip first column
     crossColumns = \
         list( combinations_with_replacement( range( 1, args.numCols ), 2 ) )
-<<<<<<< HEAD
     N_ = len( crossColumns )
 
     if args.chunksize is None :
@@ -190,25 +160,6 @@ def main():
         print( "Result has ", str( len( interactD_ ) ), " items." )
 
     # Create matrices to hold results from InteractFunc()
-=======
-
-    # Pack crossColumns into iterable with copies of args, data
-    # Each iterable item will be: (col1, col2), args, data
-    poolArgs = zip( crossColumns, repeat( args ), repeat( data ) )
-
-    if args.verbose: print( "Starting pool.starmap" )
-
-    # Use pool.starmap to distribute among cores
-    pool = Pool( processes = args.cores )
-
-    # starmap: elements of the iterable argument are iterables
-    #          that are unpacked as arguments
-    CMList = pool.starmap( StarMapFunc, poolArgs )
-
-    if args.verbose: print( "Result has ", str( len( CMList ) ), " items." )
-
-    # Create matrices to hold results from StarMapFunc()
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
     CCM_mat = CM = CC = IXY = NL = rhoDiff = CMI = SMap = None
     if args.CCM      : CCM_mat = full ( ( N - 1, N - 1 ), nan )
     if args.CrossMap : CM      = full ( ( N - 1, N - 1 ), nan )
@@ -221,13 +172,8 @@ def main():
     col1Names = [""] * ( N - 1 )
     col2Names = [""] * ( N - 1 )
 
-<<<<<<< HEAD
     # Unpack the interactD_ list of dictionaries into matrices
     for D in interactD_ :
-=======
-    # Unpack the CMList of dictionaries into matrices
-    for D in CMList :
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
         if D is None :
             continue
 
@@ -329,13 +275,8 @@ def main():
                     fileName = args.outCSVFile + '_' + key + '.csv'
                     CMI_df.round( args.precision ).to_csv( fileName )
 
-<<<<<<< HEAD
     elapsedTime = datetime.now() - startTime
     print( "Normal Exit elapsed time: ", elapsedTime )
-=======
-    elapsedTime = time.time() - startTime
-    print( "Normal Exit elapsed time:", round( elapsedTime, 4 ) )
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 
     #-----------------------------------------
     if args.verbose :
@@ -416,11 +357,7 @@ def main():
 
 #----------------------------------------------------------------------------
 #----------------------------------------------------------------------------
-<<<<<<< HEAD
 def InteractFunc( crossColumns, data, args ):
-=======
-def StarMapFunc( crossColumns, args, data ):
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
     '''Simplex cross map, CCM, Uncertainty coefficient, Pearsons rho,
        Mutual Information Non Linearity & Pao's rho diff on one
        pair of columns of the input data.
@@ -488,7 +425,6 @@ def StarMapFunc( crossColumns, args, data ):
         libMax   = data.shape[0] - abs( args.tau ) * args.E
         libSizes = [ libMin, libMax ]
 
-<<<<<<< HEAD
         # pyEDM 2.5.0 refactored CCM : CCM_Matrix would be better here.
         # If pyEDM 2.5.0 or greater, use legacy = True for 2.4.0 CCM
         CCM_version_ = [int(_) for _ in pyEDM_version.split('.')]
@@ -526,21 +462,6 @@ def StarMapFunc( crossColumns, args, data ):
                         verbose         = False,
                         showPlot        = False,
                         legacy          = True )
-=======
-        cmap = CCM( dataFrame       = data,
-                    E               = args.E,
-                    Tp              = args.Tp,
-                    knn             = 0,
-                    tau             = -1,
-                    sample          = args.sample,
-                    libSizes        = libSizes,
-                    exclusionRadius = args.exclusionRadius,
-                    columns         = column,
-                    target          = target,
-                    embedded        = False,
-                    verbose         = False,
-                    showPlot        = False )
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 
         # cmap [ LibSize, column:target, target:column ] x 2 rows
         # delta is CCM at large libSize - CCM at small libSize
@@ -682,21 +603,12 @@ def StarMapFunc( crossColumns, args, data ):
 def PredictNL( column, target, args, data ):
     '''SMap PredictNonlinear'''
 
-<<<<<<< HEAD
     if len( args.theta ) :
         # theta specified
         numProcess = min( [ len( args.theta ), args.cores ] ) # numpy min
     else :
         # theta not specified, pyEDM default has 15 values
         numProcess = min( [ 15, args.cores ] )
-=======
-    if args.theta :
-        # theta specified
-        numThreads = min( [ len( args.theta ), args.cores ] ) # numpy min
-    else :
-        # theta not specified, cppEDM default has 15 values
-        numThreads = min( [ 15, args.cores ] )
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 
     #-------------------------------------------------------
     #    DataFrame with columns theta and rho. 
@@ -713,11 +625,7 @@ def PredictNL( column, target, args, data ):
                            target          = target,
                            embedded        = False,
                            verbose         = False,
-<<<<<<< HEAD
                            numProcess      = numProcess,
-=======
-                           numThreads      = numThreads,
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
                            showPlot        = False )
 
     rho = DF[ 'rho' ]
@@ -758,7 +666,6 @@ def ParseCmdLine():
                         action = 'store', default = 8,
                         help = 'Multiprocessing cores.')
 
-<<<<<<< HEAD
     parser.add_argument('-mp', '--mpMethod',
                         dest    = 'mpMethod', type = str,
                         action  = 'store',
@@ -770,8 +677,6 @@ def ParseCmdLine():
                         action = 'store', default = None,
                         help = 'ProcessPool chunksize')
 
-=======
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
     parser.add_argument('-oc', '--outCSVFile',
                         dest   = 'outCSVFile', type = str,
                         action = 'store',   default = None,

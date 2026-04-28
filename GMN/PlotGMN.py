@@ -32,24 +32,15 @@ def main():
     dfData.set_index( args.timeVar, drop = True, inplace = True )
 
     # subset dfData to same index as dfGen
-<<<<<<< HEAD
     overlapTime = dfGen.index.intersection(dfData.index)
     dfDataGen   = dfData.loc[ overlapTime, args.dataVariables ]
-=======
-    dfDataGen = dfData.loc[ dfGen.index, args.dataVariables ]
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 
     #----------------------------------------------------------------
     # RMSE of data - generated
     # Convert to numpy for error difference (pandas matches column
     # names in DataFrame difference) then back to DataFrame
-<<<<<<< HEAD
     error = dfDataGen.loc[:, args.dataVariables] - \
             dfGen.iloc[:dfDataGen.shape[0],:].loc[:, args.genVariables]
-=======
-    error = dfDataGen.loc[:, args.dataVariables].to_numpy() - \
-            dfGen.loc    [:, args.genVariables].to_numpy()
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
     error = DataFrame( error, columns = args.dataVariables )
 
     #print( error.head(2) )
@@ -84,11 +75,7 @@ def main():
         ax.tick_params( axis = 'both', labelsize = 12 )
 
     ax = axes[3]
-<<<<<<< HEAD
     ax.plot(overlapTime, rmse, label = "RMSE", color = 'brown', lw = 3)
-=======
-    ax.plot(timeGen, rmse, label = "RMSE", color = 'brown', lw = 3)
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
     ax.axvline( x = args.genStart, color="red", lw = 2 )
     ax.set_ylabel( "RMSE", fontsize = 12 )
     ax.tick_params( axis='both', labelsize = 12 )
@@ -112,11 +99,7 @@ def ParseCmdLine():
     parser.add_argument('-i', '--inFile',
                         dest   = 'inFile', type = str, 
                         action = 'store',
-<<<<<<< HEAD
                         default = 'GMN_Lorenz_E3_tau-7_pS_2000_pL_1000.csv',
-=======
-                        default = 'GMN_E3_tau-7_pS_2000_pL_1000.csv',
->>>>>>> ee9502443e792850da95722a5416aae3f609f02f
                         help = '.csv GMN out file')
 
     parser.add_argument('-g', '--generator',
