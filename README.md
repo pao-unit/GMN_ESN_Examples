@@ -4,7 +4,13 @@
 Generative Manifold Networks are a generalization of nonlinear dynamical systems from a single manifold representing a state-space to an interconnected network of manifolds. This page demonstrates GMN on four data sets with comparisons to echo state networks (ESN) and crossformer.
 
 ---
+<<<<<<< HEAD
 GMN package: [gmn](https://github.com/pao-unit/gmn), see [Documentation](https://nonlineardynamicsdsu.github.io/gmn/).
+=======
+### Lorenz'63
+
+#### GMN
+>>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 
 GMN requires [pyEDM](https://github.com/SugiharaLab/pyEDM), see [Documentation](https://sugiharalab.github.io/EDM_Documentation/).
 
@@ -39,6 +45,7 @@ with open('Lorenz3D_4k_iMatrix_MI.pkl', 'rb') as f:
 
 network['Map']
 ### {'V3': ['V1', 'V2'], 'V1': [], 'V2': ['V1']}
+<<<<<<< HEAD
 network['Graph'].nodes
 ### NodeView(('V2', 'V3', 'V1'))
 [_ for _ in network['Graph'].predecessors('V3')]
@@ -52,6 +59,32 @@ Run GMN without a config file using the GMN application RunNoConfig.py. Paramete
 ./RunNoConfig.py -pS 2000 -pL 1000 -PT time -tn V3 \
 -nf Lorenz3D_4k_iMatrix_MI.pkl -nd ../data/Lorenz3D_4k.csv -E 3 \
 -tau -7 -o GMN_Lorenz_E3_tau-7_pS_2000_pL_1000.csv -PC V3 V1 V2 -P
+=======
+network['Graph']
+### <networkx.classes.digraph.DiGraph object at 0x...>
+
+# Plot using networkx
+import matplotlib.pyplot as plt
+import networkx as nx
+
+G = network['Graph']
+
+nx.draw(G,with_labels=True,font_size=16,
+        node_color='lightgray',font_weight='bold')
+plt.show()
+```
+
+---
+![GMN_Network_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_Network_Lorenz3D.png)
+---
+
+Run GMN without a config file using the GMN application RunNoConfig.py. Parameters: E=3, tau=-7, taget node V3, GMN network file Lorenz3D_tgtV3_2.pkl, data file Lorenz3D_4k.csv. Start generation at index 2000, generate 1000 values.
+
+```
+./RunNoConfig.py -pS 2000 -pL 1000 -PT time -tn V3 \
+-nf Lorenz3D_tgtV3_2.pkl -nd ../data/Lorenz3D_4k.csv -E 3 \
+-tau -7 -o GMN_E3_tau-7_pS_2000_pL_1000.csv -PC V3 V1 V2 -P
+>>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 ```
 
 ---
@@ -77,6 +110,7 @@ Run ESN on Lorenz'63 with 1000, 2000, 3000 nodes. Train ESN on first 2000 points
 ```
 cd ../ESN
 ./RunESN.py -R 1000 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv \
+<<<<<<< HEAD
 -o ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv -P --xlim 45 65 -lr 0.5 -rl 0.0005
 
 ./RunESN.py -R 2000 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv \
@@ -84,6 +118,15 @@ cd ../ESN
 
 ./RunESN.py -R 3000 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv \
 -o ESN_R3000_Lorenz3D_pS_2000_pL_1000.csv -P --xlim 45 65
+=======
+-o ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv -P
+
+./RunESN.py -R 2000 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv \
+-o ESN_R2000_Lorenz3D_pS_2000_pL_1000.csv -P
+
+./RunESN.py -R 3000 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv \
+-o ESN_R3000_Lorenz3D_pS_2000_pL_1000.csv -P
+>>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 ```
 
 ---
@@ -91,9 +134,16 @@ cd ../ESN
 ---
 
 
+<<<<<<< HEAD
 Plot 1000 node generated dynamics and RMSE.
 ```
 ./RunESN.py -R 1000 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv -P --xlim 45 65 -lr 0.5 -rl 0.0005
+=======
+Plot 1000 node generated dynamics and RMSE with PlotGMN.py application.
+```
+../GMN/PlotGMN.py -i ../ESN/ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv \
+-gv V1_ V2_ V3_ --title "ESN 1000"
+>>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 ```
 
 ---
@@ -109,7 +159,11 @@ from pandas import read_csv
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+<<<<<<< HEAD
 gmnLorenz = read_csv('GMN/GMN_Lorenz_E3_tau-7_pS_2000_pL_1000.csv')
+=======
+gmnLorenz = read_csv('GMN/GMN_E3_tau-7_pS_2000_pL_1000.csv')
+>>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 esnR1000  = read_csv('ESN/ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv')
 esnR2000  = read_csv('ESN/ESN_R2000_Lorenz3D_pS_2000_pL_1000.csv')
 esnR3000  = read_csv('ESN/ESN_R3000_Lorenz3D_pS_2000_pL_1000.csv')
@@ -144,7 +198,11 @@ from pandas import read_csv
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 
+<<<<<<< HEAD
 gmnLorenz = read_csv('GMN/GMN_Lorenz_E3_tau-7_pS_2000_pL_1000.csv')
+=======
+gmnLorenz = read_csv('GMN/GMN_E3_tau-7_pS_2000_pL_1000.csv')
+>>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 esnR1000  = read_csv('ESN/ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv')
 esnR2000  = read_csv('ESN/ESN_R2000_Lorenz3D_pS_2000_pL_1000.csv')
 esnR3000  = read_csv('ESN/ESN_R3000_Lorenz3D_pS_2000_pL_1000.csv')
@@ -186,10 +244,13 @@ Compute interaction matrix with GMN InteractionMatrix.py application
 ```
 GMN/InteractionMatrix.py -d data/Fly80XY_norm_1061.csv -rhoDiff -P -E 7
 ```
+<<<<<<< HEAD
 ---
 ![Interaction_Matrix_Drosophila](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/Interaction_Matrix_Drosophila.png)
 ---
 
+=======
+>>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 
 Plot Fly GMN Network
 ```
@@ -207,9 +268,14 @@ print( network['Map'] )
 
 G = network['Graph']
 
+<<<<<<< HEAD
 nx.draw(G,with_labels=True,alpha=0.7,font_size=16,
         node_color='lightgray',font_weight='bold',
         pos=nx.arf_layout(G))
+=======
+nx.draw_kamada_kawai(G,with_labels=True,alpha=0.7,font_size=16,
+                     node_color='lightgray',font_weight='bold')
+>>>>>>> ee9502443e792850da95722a5416aae3f609f02f
 plt.show()
 ```
 
@@ -277,6 +343,7 @@ plt.show()
 ![GMN_ESN_DrosophilaFWD_Generate](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_ESN_DrosophilaFWD_Generate.png)
 ---
 
+<<<<<<< HEAD
 
 ---
 ### Rattus
@@ -508,3 +575,5 @@ for i, ax in enumerate( axs ) :
 
 plt.show()
 ```
+=======
+>>>>>>> ee9502443e792850da95722a5416aae3f609f02f
