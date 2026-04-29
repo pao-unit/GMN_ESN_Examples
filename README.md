@@ -1,6 +1,7 @@
 ## GMN/ESN/Crossformer code and data for *Explainable prediction and simulation of complex system dynamics through networks of manifolds* 
 
 ### Generative Manifold Networks (GMN)
+
 Generative Manifold Networks are a generalization of nonlinear dynamical systems from a single manifold representing a state-space to an interconnected network of manifolds. This page demonstrates GMN on four data sets with comparisons to echo state networks (ESN) and crossformer.
 ---
 
@@ -26,7 +27,7 @@ cd GMN
 
 Create GMN network using the mutual information interaction matrix:
 ```
-./CreateNetwork.py -i Lorenz3D_4k_iMatrix_MI.csv -t V3 -d 3 -o Lorenz3D_4k_iMatrix_MI.pkl -v -P -as 30 -fs 26 -ns 200
+./CreateNetwork.py -i Lorenz3D_4k_iMatrix_MI.csv -t V3 -d 3 -o Lorenz3D_4k_Network_MI.pkl -v -P -as 30 -fs 26 -ns 200
 ```
 ---
 ![GMN_Network_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_Network_Lorenz3D.png)
@@ -36,12 +37,11 @@ Examine GMN network:
 ```python
 from pickle import load
 
-with open('Lorenz3D_4k_iMatrix_MI.pkl', 'rb') as f:
+with open('Lorenz3D_4k_Network_MI.pkl', 'rb') as f:
      network = load(f)
 
 network['Map']
 ### {'V3': ['V1', 'V2'], 'V1': [], 'V2': ['V1']}
-<<<<<<< HEAD
 network['Graph'].nodes
 ### NodeView(('V2', 'V3', 'V1'))
 [_ for _ in network['Graph'].predecessors('V3')]
@@ -49,36 +49,12 @@ network['Graph'].nodes
 
 ```
 
-Run GMN without a config file using the GMN application RunNoConfig.py. Parameters: E=3, tau=-7, taget node V3, GMN network file `Lorenz3D_tgtV3_2.pkl`, data file `Lorenz3D_4k.csv`. Start generation at index 2000, generate 1000 values.
+Run GMN without a config file using the GMN application RunNoConfig.py. Parameters: E=3, tau=-7, taget node V3, GMN network file `Lorenz3D_4k_Network_MI.pkl`, data file `Lorenz3D_4k.csv`. Start generation at index 2000, generate 1000 values.
 
 ```
 ./RunNoConfig.py -pS 2000 -pL 1000 -PT time -tn V3 \
--nf Lorenz3D_4k_iMatrix_MI.pkl -nd ../data/Lorenz3D_4k.csv -E 3 \
--tau -7 -o GMN_Lorenz_E3_tau-7_pS_2000_pL_1000.csv -PC V3 V1 V2 -P
-```
-
-```python
-# Plot using networkx
-import matplotlib.pyplot as plt
-import networkx as nx
-
-G = network['Graph']
-
-nx.draw(G,with_labels=True,font_size=16,
-        node_color='lightgray',font_weight='bold')
-plt.show()
-```
-
----
-![GMN_Network_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_Network_Lorenz3D.png)
----
-
-Run GMN without a config file using the GMN application RunNoConfig.py. Parameters: E=3, tau=-7, taget node V3, GMN network file Lorenz3D_tgtV3_2.pkl, data file Lorenz3D_4k.csv. Start generation at index 2000, generate 1000 values.
-
-```
-./RunNoConfig.py -pS 2000 -pL 1000 -PT time -tn V3 \
--nf Lorenz3D_tgtV3_2.pkl -nd ../data/Lorenz3D_4k.csv -E 3 \
--tau -7 -o GMN_E3_tau-7_pS_2000_pL_1000.csv -PC V3 V1 V2 -P
+-nf Lorenz3D_4k_Network_MI.pkl -nd ../data/Lorenz3D_4k.csv -E 3 \
+-tau -7 -o GMN_Lorenz_E3_tau-7_pS_2000_pL_1000.csv
 ```
 
 ---
@@ -104,19 +80,15 @@ Run ESN on Lorenz'63 with 1000, 2000, 3000 nodes. Train ESN on first 2000 points
 ```
 cd ../ESN
 ./RunESN.py -R 1000 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv \
--o ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv -P --xlim 45 65 -lr 0.5 -rl 0.0005
+-o ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv -lr 0.5 -rl 0.0005
 
 ./RunESN.py -R 2000 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv \
--o ESN_R2000_Lorenz3D_pS_2000_pL_1000.csv -P --xlim 45 65
+-o ESN_R2000_Lorenz3D_pS_2000_pL_1000.csv 
 
 ./RunESN.py -R 3000 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv \
--o ESN_R3000_Lorenz3D_pS_2000_pL_1000.csv -P --xlim 45 65
+-o ESN_R3000_Lorenz3D_pS_2000_pL_1000.csv
 ```
-
 ---
-![ESN_R1000_Generated_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/ESN_R1000_Generated_Lorenz3D.png)
----
-
 Plot 1000 node generated dynamics and RMSE.
 ```
 ./RunESN.py -R 1000 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv -P --xlim 45 65 -lr 0.5 -rl 0.0005
@@ -210,22 +182,28 @@ plt.show()
 
 Compute interaction matrix with GMN InteractionMatrix.py application 
 ```
-GMN/InteractionMatrix.py -d data/Fly80XY_norm_1061.csv -rhoDiff -P -E 7
+cd ../GMN
+./InteractionMatrix.py -d ../data/Fly80XY_norm_1061.csv -rhoDiff -oc Fly80_iMatrix -E 7 -P
 ```
 ---
 ![Interaction_Matrix_Drosophila](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/Interaction_Matrix_Drosophila.png)
 ---
 
+Create Network
+---
+```
+./CreateNetwork.py -i Fly80_iMatrix_rhoDiff.csv -d 5 -t FWD -x Left_Right -o Fly_Network_rhoDiff_D5_T0.23.pkl -T 0.23 -v
+```
+---
+
 Plot Fly GMN Network
-```
-cd GMN
-```
+---
 ```python
 from pickle import load
 import matplotlib.pyplot as plt
 import networkx as nx
 
-with open('Fly80_norm_1061_rhoDiff_Network_D4.pkl', 'rb') as f:
+with open('Fly_Network_rhoDiff_D5_T0.23.pkl', 'rb') as f:
      network = load(f)
 
 print( network['Map'] )
@@ -233,7 +211,7 @@ print( network['Map'] )
 G = network['Graph']
 
 nx.draw(G,with_labels=True,alpha=0.7,font_size=16,
-        node_color='lightgray',font_weight='bold',
+        node_color='lightblue',font_weight='bold',
         pos=nx.arf_layout(G))
 
 plt.show()
@@ -247,10 +225,10 @@ plt.show()
 Run GMN on target node FWD with Tp 1 -E 7 -tau -8
 ```
 ./RunNoConfig.py -pS 580 -pL 480 -PT index -tn FWD \
--nf Fly80_norm_1061_rhoDiff_Network_D4.pkl \
+-nf Fly_Network_rhoDiff_D5_T0.23.pkl \
 -nd ../data/Fly80XY_norm_1061.csv -PT time -nn "Fly 80 : FWD" \
--Tp 1 -E 7 -tau -8 -do GMN_Fly80_1061_rhoDiff_D4_E7_tau-8.csv \
--PC FWD TS2 TS30 -P
+-Tp 1 -E 7 -tau -8 -do GMN_Fly80_1061_rhoDiff_D5_E7_tau-8.csv \
+-PC FWD TS17 TS37 -P
 ```
 
 ---
@@ -312,6 +290,7 @@ plt.show()
 
 Compute interaction matrix with `pyEDM` `CCM_Matrix.py` application. Note this is an example matrix computed with a fixed embedding dimension E=10. 
 ```
+cd GMN
 ./CCM_Matrix.py -i ../data/J16_2021-06-05_epoch_8_1_Hz.csv -E 10 -of CCMTensor_J16_2021-06-05_epoch_8_1_Hz.npz -b 2000 -log -z 5 -v
 ```
 
@@ -326,12 +305,12 @@ cmap1079 = _ccm['tensor'][:,:,3].copy() # Cross map matrix L=1079
 columns  = _ccm['columns']
 slope    = _ccm['slope']
 
-PlotMatrix(cmap1079,columns,title='CCM J16_2021-06-05 L=1078',figsize=(6,6))
-PlotMatrix(slope,columns,title='CCM Slope J16_2021-06-05',figsize=(6,6), vmin=0.,vmax=0.3)
+PlotMatrix(cmap1079,columns,title='CCM J16 L=1078',figsize=(6,6))
+PlotMatrix(slope,columns,title='CCM Slope J16',figsize=(6,6), vmin=0.,vmax=0.3)
 
 cmap1079[slope<0.1] = nan
 
-PlotMatrix(cmap1079,columns,title='CCM J16_2021-06-05',figsize=(6,6),vmin=0.3)
+PlotMatrix(cmap1079,columns,title='CCM J16',figsize=(6,6),vmin=0.3)
 
 ```
 
@@ -486,23 +465,22 @@ plt.show()
 
 #### Crossformer
 ---
-Download [crossformer](https://github.com/Thinklab-SJTU/Crossformer) on ETTh1 data forecast 720 points, run the `main_crossformer.py` application.
+Download [crossformer](https://github.com/Thinklab-SJTU/Crossformer) on ETTh1 data forecast 720 points, run `main_crossformer.py` application.
 
 ```
 python main_crossformer.py --data ETTh1 --in_len 720 --out_len 720 --seg_len 24 --learning_rate 1e-5 --itr 5 --save_pred
-```
 
-```
-cd results
+cd results # In Crossformer 
 cd Crossformer_ETTh1_il720_ol720_sl24_win2_fa10_dm256_nh4_el3_itr4
 ```
 
+Crossfomer result stored here in local Crossformer/
 ```python
 # Plot Crossformer results i=13700,14420
 df = read_csv('dfx0_ETTh1_il720_ol720.csv')
 
 # Observed data
-data = read_csv('../../datasets/ETTh1.csv')
+data = read_csv('../data/ETTh1.csv')
 
 # Error strings
 from pyEDM import ComputeError
