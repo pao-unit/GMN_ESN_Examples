@@ -1,11 +1,8 @@
-## GMN/ESN/Crossformer code and data for *Explainable prediction and simulation of complex system dynamics through networks of manifolds* 
+## GMN/ESN/Crossformer code and data for <br> *Explainable prediction and simulation of complex system dynamics through networks of manifolds* 
 
 ### Generative Manifold Networks (GMN)
-
-Generative Manifold Networks are a generalization of nonlinear dynamical systems from a single manifold representing a state-space to an interconnected network of manifolds. This page demonstrates GMN on four data sets with comparisons to echo state networks (ESN) and crossformer.
 ---
-
-#### GMN
+Generative Manifold Networks are a generalization of nonlinear dynamical systems from a single manifold representing a state-space to an interconnected network of manifolds. This page demonstrates GMN on four data sets with comparisons to echo state networks (ESN) and crossformer.
 
 GMN package: [gmn](https://github.com/pao-unit/gmn), see [Documentation](https://nonlineardynamicsdsu.github.io/gmn/).
 
