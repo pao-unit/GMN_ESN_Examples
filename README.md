@@ -10,6 +10,7 @@ GMN requires [pyEDM](https://github.com/SugiharaLab/pyEDM#empirical-dynamic-mode
 
 ---
 ### Lorenz'63
+---
 
 #### GMN
 
@@ -18,16 +19,18 @@ Create a mutual information interaction matrix with the -mi option:
 cd GMN
 ./InteractionMatrix.py -d ../data/Lorenz3D_4k.csv -P -v -mi -oc Lorenz3D_4k_iMatrix
 ```
----
+
 ![MI iMatrix](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/Lorenz63_MI_iMatrix.png)
+
 ---
 
 Create GMN network using the mutual information interaction matrix:
 ```
 ./CreateNetwork.py -i Lorenz3D_4k_iMatrix_MI.csv -t V3 -d 3 -o Lorenz3D_4k_Network_MI.pkl -v -P -as 30 -fs 26 -ns 200
 ```
----
+
 ![GMN_Network_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_Network_Lorenz3D.png)
+
 ---
 
 Examine GMN network:
@@ -43,8 +46,9 @@ network['Graph'].nodes
 ### NodeView(('V2', 'V3', 'V1'))
 [_ for _ in network['Graph'].predecessors('V3')]
 ### ['V2', 'V1']
-
 ```
+
+---
 
 Run GMN without a config file using the GMN application RunNoConfig.py. Parameters: E=3, tau=-7, taget node V3, GMN network file `Lorenz3D_4k_Network_MI.pkl`, data file `Lorenz3D_4k.csv`. Start generation at index 2000, generate 1000 values.
 
@@ -54,18 +58,18 @@ Run GMN without a config file using the GMN application RunNoConfig.py. Paramete
 -tau -7 -o GMN_Lorenz_E3_tau-7_pS_2000_pL_1000.csv
 ```
 
----
 ![GMN_Generated_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_Generated_Lorenz3D.png)
----
 
+
+---
 
 Plot generated dynamics and RMSE with PlotGMN.py application.
 ```
 ./PlotGMN.py
 ```
 
----
 ![GMN_Generated_RMSE_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_Generated_RMSE_Lorenz3D.png)
+
 ---
 
 #### ESN
@@ -86,13 +90,14 @@ cd ../ESN
 -o ESN_R3000_Lorenz3D_pS_2000_pL_1000.csv
 ```
 ---
+
 Plot 1000 node generated dynamics and RMSE.
 ```
 ../GMN/PlotGMN.py -d ../data/Lorenz3D_4k.csv -i ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv -g ESN -dv V1 V2 V3 -gv V1_ V2_ V3_ -t "ESN 1000 reservoir nodes" --xlim 45 65
 ```
 
----
 ![ESN_R1000_Generated_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/ESN_R1000_Generated_Lorenz3D.png)
+
 ---
 
 #### Plot 3D dynamics
@@ -127,10 +132,9 @@ ax4.plot( esnR3000['V1_'], esnR3000['V2_'], esnR3000['V3_'] )
 plt.show()
 ```
 
----
 ![GMN_ESN_Generated_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_ESN_Generated_Lorenz3D.png)
----
 
+---
 
 #### Plot PSD
 
@@ -165,13 +169,12 @@ ax0.legend()
 plt.show()
 ```
 
----
 ![GMN_ESN_PSD_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_ESN_PSD_Lorenz3D.png)
----
-
 
 ---
 
+
+---
 ### Drosophila
 ---
 #### GMN
@@ -181,8 +184,9 @@ Compute interaction matrix with GMN InteractionMatrix.py application
 cd GMN
 ./InteractionMatrix.py -d ../data/Fly80XY_norm_1061.csv -rhoDiff -oc Fly80_iMatrix -E 7 -P
 ```
----
+
 ![Interaction_Matrix_Drosophila](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/Interaction_Matrix_Drosophila.png)
+
 ---
 
 Create Network
@@ -213,10 +217,9 @@ nx.draw(G,with_labels=True,alpha=0.7,font_size=16,
 plt.show()
 ```
 
----
 ![GMN_Network_Drosophila](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_Network_Drosophila.png)
----
 
+---
 
 Run GMN on target node FWD with Tp 1 -E 7 -tau -8
 ```
@@ -227,20 +230,17 @@ Run GMN on target node FWD with Tp 1 -E 7 -tau -8
 -PC FWD TS17 TS37 -P
 ```
 
----
 ![GMN_Generated_Drosophila](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_Generated_Drosophila.png)
----
-
 
 ---
+
 #### ESN
 
 3000 node ESN to generate FWD : Same TS input as GMN with network Fly80_norm_rhoDiff_Network_D4.pkl
 
 ```
 cd ../ESN
-```
-```
+
 ./RunESN.py -i ../data/Fly80XY_norm_1061.csv -sr 0.9 -lr 0.5 -time index \
 -iv TS1 TS2 TS3 TS4 TS5 TS6 TS7 TS8 TS9 TS10 TS11 TS12 TS13 TS14 TS15 TS16 \
 TS17 TS18 TS19 TS20 TS21 TS22 TS23 TS24 TS25 TS26 TS27 TS28 TS29 TS30 TS31 \
@@ -251,10 +251,9 @@ TS77 TS78 TS79 TS80 FWD -t 1 500 -b 100 -e 601 1000 -R 3000 \
 -o ESN_Fly80_1061.csv -P
 ```
 
----
 ![ESN_Generated_Drosophila](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/ESN_Generated_Drosophila.png)
----
 
+---
 
 #### Plot results
 ```
@@ -273,8 +272,8 @@ esn.plot('index','FWD_',ax=ax,lw=2,label='ESN') # ESN
 plt.show()
 ```
 
----
 ![GMN_ESN_DrosophilaFWD_Generate](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/GMN_ESN_DrosophilaFWD_Generate.png)
+
 ---
 
 ---
@@ -305,11 +304,10 @@ PlotMatrix(slope,columns,title='CCM Slope J16',figsize=(6,6), vmin=0.,vmax=0.3)
 cmap1079[slope<0.1] = nan
 
 PlotMatrix(cmap1079,columns,title='CCM J16',figsize=(6,6),vmin=0.3,vmax=0.8)
-
 ```
 
----
 ![Rattus_Interaction_Matrix](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/Rattus_Interaction_Matrix.png)
+
 ---
 
 Create Network
@@ -317,7 +315,6 @@ Create Network
 ```
 ./CreateNetwork.py -i ../data/CCM_Converged_J16_2021-06-05_epoch_8_1_Hz.feather -df ../data/numDrivers_DF.feather -t head_position_x -x head_position_y head_velocity_x head_velocity_y head_speed head_orientation -o GMN_RatPosX_EDim_T0.6_CCM_Network.pkl -T 0.6
 ```
----
 
 Plot Network
 ---
@@ -335,8 +332,8 @@ nx.draw( G, with_labels=True, alpha=0.7, font_size=16, node_color='lightgray',
 
 ```
 
----
 ![Rattus_GMN_Network](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/Rattus_GMN_Network.png)
+
 ---
 
 Run GMN
@@ -364,7 +361,6 @@ plt.tight_layout()
 plt.show()
 ```
 
----
 ![Rattus_GMN_Generated](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/Rattus_GMN_head_pos_x.png)
 ---
 
@@ -393,8 +389,9 @@ ax[1].legend(['ESN head_position_x'])
 plt.tight_layout()
 plt.show()
 ```
----
+
 ![Rattus_GMN_Network](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/Rattus_ESN_Generated.png)
+
 ---
 
 ### Crossformer
@@ -408,8 +405,8 @@ Compute CCM interaction matrix of ETTh1 crossformer data.
 ./InteractionMatrix.py -d ../data/ETTh1.csv -cr 10 -cz 1000 -E 7 -P -ccm -v -s 50 -C 0.05 -oc ETTh1_iMatrix
 ```
 
----
 ![ETTh1_Interaction_Matrix](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/ETTh1_Interaction_Matrix.png)
+
 ---
 
 Create GMN network for the ETTh1 crossformer data.
@@ -417,7 +414,7 @@ Create GMN network for the ETTh1 crossformer data.
 ```
 ./CreateNetwork.py -i ETTh1_iMatrix_CCM.csv -t OT -d 7 -P -l spring -nc lightblue -lw 2 -as 18 -fs 20 -ns 200 -o ETTh1_GMN_iMatrix_CCM.pkl
 ```
----
+
 ![ETTh1_GMN_Network](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/ETTh1_GMN_Network.png)
 ---
 
@@ -426,8 +423,9 @@ Run GMN in forecast mode to compare with crossformer which is not generative.
 ./RunNoConfig.py --mode forecast -tn OT -nf ETTh1_GMN_iMatrix_CCM.pkl -nd ../data/ETTh1.csv -E 5 -l "8000 11500" -p "11500 12220" -do ETTh1_GMN_iMatrix_CCM_DataOut.csv -v
 ```
 
+Plot GMN results
+
 ```python
-# Plot GMN results
 from pandas import to_datetime, concat
 data = read_csv('../data/ETTh1.csv')
 data['date'] = to_datetime(data['date'])
@@ -469,8 +467,9 @@ for i, ax in enumerate( axs ) :
 
 plt.show()
 ```
----
+
 ![ETTh1_GMN_Network](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/ETTh1_GMN_out.png)
+
 ---
 
 
@@ -527,6 +526,7 @@ for i, ax in enumerate( axs ) :
 
 plt.show()
 ```
----
+
 ![ETTh1_GMN_Network](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/ETTh1_Crossformer_out.png)
+
 ---
