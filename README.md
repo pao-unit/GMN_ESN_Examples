@@ -1,12 +1,12 @@
-## GMN/ESN/Crossformer code and data for <br> *Explainable prediction and simulation of complex system dynamics through networks of manifolds* 
+## GMN/ESN/Crossformer code and data for: <br><br> *Explainable prediction and simulation of complex system dynamics through networks of manifolds* 
 
 ### Generative Manifold Networks (GMN)
 ---
 Generative Manifold Networks are a generalization of nonlinear dynamical systems from a single manifold representing a state-space to an interconnected network of manifolds. This page demonstrates GMN on four data sets with comparisons to echo state networks (ESN) and crossformer.
 
-GMN package: [gmn](https://github.com/pao-unit/gmn), see [Documentation](https://nonlineardynamicsdsu.github.io/gmn/).
+GMN package: [gmn](https://github.com/pao-unit/gmn#generative-manifold-networks-gmn), see [Documentation](https://pao-unit.github.io/gmn/).
 
-GMN requires [pyEDM](https://github.com/SugiharaLab/pyEDM), see [Documentation](https://sugiharalab.github.io/EDM_Documentation/).
+GMN requires [pyEDM](https://github.com/SugiharaLab/pyEDM#empirical-dynamic-modeling-edm), see [Documentation](https://sugiharalab.github.io/EDM_Documentation/).
 
 ---
 ### Lorenz'63
@@ -88,7 +88,7 @@ cd ../ESN
 ---
 Plot 1000 node generated dynamics and RMSE.
 ```
-../GMN/PlotGMN.py -d ../data/Lorenz3D_4k.csv -i ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv -g ESN -dv V1 V2 V3 -gv V1_ V2_ V3_ -time Time --xlim 45 65
+../GMN/PlotGMN.py -d ../data/Lorenz3D_4k.csv -i ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv -g ESN -dv V1 V2 V3 -gv V1_ V2_ V3_ -t "ESN 1000 reservoir nodes" --xlim 45 65
 ```
 
 ---
@@ -178,7 +178,7 @@ plt.show()
 
 Compute interaction matrix with GMN InteractionMatrix.py application 
 ```
-cd ../GMN
+cd GMN
 ./InteractionMatrix.py -d ../data/Fly80XY_norm_1061.csv -rhoDiff -oc Fly80_iMatrix -E 7 -P
 ```
 ---
@@ -280,11 +280,9 @@ plt.show()
 ---
 ### Rattus
 ---
-
----
 #### GMN
 
-Compute interaction matrix with `pyEDM` `CCM_Matrix.py` application. Note this is an example matrix computed with a fixed embedding dimension E=10. 
+Compute interaction matrix with `pyEDM` `CCM_Matrix.py` application. Note this is an example matrix computed with a fixed embedding dimension E=10.
 ```
 cd GMN
 ./CCM_Matrix.py -i ../data/J16_2021-06-05_epoch_8_1_Hz.csv -E 10 -of CCMTensor_J16_2021-06-05_epoch_8_1_Hz.npz -b 2000 -log -z 5 -v
@@ -301,12 +299,12 @@ cmap1079 = _ccm['tensor'][:,:,3].copy() # Cross map matrix L=1079
 columns  = _ccm['columns']
 slope    = _ccm['slope']
 
-PlotMatrix(cmap1079,columns,title='CCM J16 L=1078',figsize=(6,6))
+PlotMatrix(cmap1079,columns,title='CCM J16 L=1078',figsize=(6,6), vmin=0.)
 PlotMatrix(slope,columns,title='CCM Slope J16',figsize=(6,6), vmin=0.,vmax=0.3)
 
 cmap1079[slope<0.1] = nan
 
-PlotMatrix(cmap1079,columns,title='CCM J16',figsize=(6,6),vmin=0.3)
+PlotMatrix(cmap1079,columns,title='CCM J16',figsize=(6,6),vmin=0.3,vmax=0.8)
 
 ```
 
@@ -317,7 +315,7 @@ PlotMatrix(cmap1079,columns,title='CCM J16',figsize=(6,6),vmin=0.3)
 Create Network
 ---
 ```
-./CreateNetwork.py -i ../data/CCM_Converged_J16_2021-06-05_epoch_8_1_Hz.feather -df ../data/numDrivers_DF.feather -t head_position_x -x head_position_y head_velocity_x head_velocity_y head_speed head_orientation -o GMN_RatPosX_EDim_T0.6_CCM_Network.pkl -T 0.6 -P -v -l arf
+./CreateNetwork.py -i ../data/CCM_Converged_J16_2021-06-05_epoch_8_1_Hz.feather -df ../data/numDrivers_DF.feather -t head_position_x -x head_position_y head_velocity_x head_velocity_y head_speed head_orientation -o GMN_RatPosX_EDim_T0.6_CCM_Network.pkl -T 0.6
 ```
 ---
 
@@ -401,13 +399,13 @@ plt.show()
 
 ### Crossformer
 
-Comparison of [crossformer](https://github.com/Thinklab-SJTU/Crossformer) with GMN. 
+Comparison of [crossformer](https://github.com/Thinklab-SJTU/Crossformerr#crossformer-transformer-utilizing-cross-dimension-dependency-for-multivariate-time-series-forecasting-iclr-2023) with GMN. 
 
 #### GMN
 ---
 Compute CCM interaction matrix of ETTh1 crossformer data.
 ```
-./InteractionMatrix.py -d Crossformer/datasets/ETTh1.csv -cr 10 -cz 1000 -E 7 -P -ccm -v -s 50 -C 0.05 -oc ETTh1_iMatrix
+./InteractionMatrix.py -d ../data/ETTh1.csv -cr 10 -cz 1000 -E 7 -P -ccm -v -s 50 -C 0.05 -oc ETTh1_iMatrix
 ```
 
 ---
@@ -435,9 +433,6 @@ data = read_csv('../data/ETTh1.csv')
 data['date'] = to_datetime(data['date'])
 
 df = read_csv('ETTh1_GMN_iMatrix_CCM_DataOut.csv')
-
-# df = read_csv('ETTh1_GMN_iMatrix_CCM_pred_13701_DataOut.csv')
-# df = read_csv('ETTh1_GMN_iMatrix_CCM_pred_11500_DataOut.csv')
 
 df['date']=to_datetime(df['date'])
 df.columns = ['date']+['GMN_'+s for s in df.columns[1:]]
