@@ -88,11 +88,11 @@ cd ../ESN
 ---
 Plot 1000 node generated dynamics and RMSE.
 ```
-./RunESN.py -R 1000 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv -P --xlim 45 65 -lr 0.5 -rl 0.0005
+../GMN/PlotGMN.py -d ../data/Lorenz3D_4k.csv -i ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv -g ESN -dv V1 V2 V3 -gv V1_ V2_ V3_ -time Time --xlim 45 65
 ```
 
 ---
-![ESN_R1000_Generated_PlotGMN_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/ESN_R1000_Generated_PlotGMN_Lorenz3D.png)
+![ESN_R1000_Generated_Lorenz3D](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/ESN_R1000_Generated_Lorenz3D.png)
 ---
 
 #### Plot 3D dynamics
@@ -171,9 +171,8 @@ plt.show()
 
 
 ---
-### Drosophila
----
 
+### Drosophila
 ---
 #### GMN
 
@@ -345,10 +344,30 @@ nx.draw( G, with_labels=True, alpha=0.7, font_size=16, node_color='lightgray',
 Run GMN
 ---
 ```
-./RunNoConfig.py -E 7 -tau -7 -pS 1199 -pL 600 -tn head_position_x -nf GMN_RatPosX_EDim_T0.6_CCM_Network.pkl -nd ../data/J16_2021-06-05_epoch_8_1_Hz.csv -do RatJ16_PosX_EDim_T0.6_DataOut.feather -c 10 -PC head_position_x -P -C head_position_x CA1_9 -fs 15 9 -v
+./RunNoConfig.py -E 7 -tau -7 -pS 1199 -pL 600 -tn head_position_x -nf GMN_RatPosX_EDim_T0.6_CCM_Network.pkl -nd ../data/J16_2021-06-05_epoch_8_1_Hz.csv -do RatJ16_PosX_EDim_T0.6_DataOut.feather -c 10 -PC head_position_x
 ```
+
+Plot observed and generated `head_position_x`
+
+```python
+from pandas import read_feather, read_csv
+from matplotlib import pyplot as plt
+
+df = read_feather('RatJ16_PosX_EDim_T0.6_DataOut.feather')
+data = read_csv('../data/J16_2021-06-05_epoch_8_1_Hz.csv')
+dataX = data.iloc[-600:,:]['head_position_x']
+df['head_position_x_obs'] = dataX.to_numpy()
+
+ax = df.plot( x='time_bin_center', y=['head_position_x_obs','head_position_x'],
+         lw=2, subplots=True )
+ax[0].legend(['Observed head_position_x'])
+ax[1].legend(['GMN head_position_x'])
+plt.tight_layout()
+plt.show()
+```
+
 ---
-![Rattus_GMN_Network](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/Rattus_GMN_GenCA1_9.png)
+![Rattus_GMN_Generated](https://raw.githubusercontent.com/pao-unit/GMN_ESN_Examples/main/plots/Rattus_GMN_head_pos_x.png)
 ---
 
 #### ESN

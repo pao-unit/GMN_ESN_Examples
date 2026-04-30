@@ -39,8 +39,8 @@ def main():
     # RMSE of data - generated
     # Convert to numpy for error difference (pandas matches column
     # names in DataFrame difference) then back to DataFrame
-    error = dfDataGen.loc[:, args.dataVariables] - \
-            dfGen.iloc[:dfDataGen.shape[0],:].loc[:, args.genVariables]
+    error = dfDataGen.loc[:, args.dataVariables].to_numpy() - \
+        dfGen.iloc[:dfDataGen.shape[0],:].loc[:, args.genVariables].to_numpy()
     error = DataFrame( error, columns = args.dataVariables )
 
     #print( error.head(2) )
