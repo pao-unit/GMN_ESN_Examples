@@ -263,7 +263,7 @@ cd ..
 from pandas import read_csv
 import matplotlib.pyplot as plt
 
-gmn = read_csv('GMN/GMN_Fly80_1061_rhoDiff_D4_E7_tau-8.csv').iloc[:420,:]
+gmn = read_csv('GMN/GMN_Fly80_1061_rhoDiff_D5_E7_tau-8.csv').iloc[:420,:]
 esn = read_csv('ESN/ESN_Fly80_1061.csv')
 
 ax = esn.plot('index','FWD',lw=2)   # FWD data
