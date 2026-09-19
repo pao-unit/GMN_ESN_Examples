@@ -2,7 +2,7 @@
 
 ### Generative Manifold Networks (GMN)
 ---
-Generative Manifold Networks are a generalization of nonlinear dynamical systems from a single manifold representing a state-space to an interconnected network of manifolds. This page demonstrates GMN on four data sets with comparisons to echo state networks (ESN) and crossformer.
+Generative Manifold Networks are a generalization of nonlinear dynamical systems from a single manifold representing a state-space to an interconnected network of manifolds. This page demonstrates GMN on four data sets with comparisons to [echo state networks (ESN)](https://en.wikipedia.org/wiki/Echo_state_network) and [crossformer](https://github.com/thinklab-sjtu/crossformer#crossformer-transformer-utilizing-cross-dimension-dependency-for-multivariate-time-series-forecasting-iclr-2023).
 
 GMN package: [gmn](https://github.com/pao-unit/gmn#generative-manifold-networks-gmn), see [Documentation](https://pao-unit.github.io/gmn/).
 
@@ -475,7 +475,7 @@ plt.show()
 
 #### Crossformer
 ---
-Download [crossformer](https://github.com/Thinklab-SJTU/Crossformer) on ETTh1 data forecast 720 points, run `main_crossformer.py` application.
+Download [crossformer](https://github.com/thinklab-sjtu/crossformer). Run on ETTh1 data to forecast 720 points with the `main_crossformer.py` application.
 
 ```
 python main_crossformer.py --data ETTh1 --in_len 720 --out_len 720 --seg_len 24 --learning_rate 1e-5 --itr 5 --save_pred
