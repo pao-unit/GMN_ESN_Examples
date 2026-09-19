@@ -1,4 +1,4 @@
-## GMN/ESN/Crossformer code and data for: <br><br> *Explainable prediction and simulation of complex system dynamics through networks of manifolds* 
+## GMN/ESN/Crossformer code and data for: <br><br> *Universal approximation through latent-free observable networks of manifolds* 
 
 ### Generative Manifold Networks (GMN)
 ---
@@ -80,14 +80,14 @@ Run ESN on Lorenz'63 with 1000, 2000, 3000 nodes. Train ESN on first 2000 points
 
 ```
 cd ../ESN
-./RunESN.py -R 1000 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv \
--o ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv -lr 0.5 -rl 0.0005
+./RunESN.py -R 500 -dg 3 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv \
+-o ESN_R500_Lorenz3D_pS_2000_pL_1000.csv
 
-./RunESN.py -R 2000 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv \
--o ESN_R2000_Lorenz3D_pS_2000_pL_1000.csv 
+./RunESN.py -R 1000 -dg 3 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv \
+-o ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv 
 
-./RunESN.py -R 3000 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv \
--o ESN_R3000_Lorenz3D_pS_2000_pL_1000.csv
+./RunESN.py -R 2000 -dg 3 -t 1 2000 -e 2001 3000 -i ../data/Lorenz3D_4k.csv \
+-o ESN_R2000_Lorenz3D_pS_2000_pL_1000.csv
 ```
 ---
 
@@ -110,9 +110,9 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 gmnLorenz = read_csv('GMN/GMN_Lorenz_E3_tau-7_pS_2000_pL_1000.csv')
+esnR500   = read_csv('ESN/ESN_R500_Lorenz3D_pS_2000_pL_1000.csv')
 esnR1000  = read_csv('ESN/ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv')
 esnR2000  = read_csv('ESN/ESN_R2000_Lorenz3D_pS_2000_pL_1000.csv')
-esnR3000  = read_csv('ESN/ESN_R3000_Lorenz3D_pS_2000_pL_1000.csv')
 
 fig = plt.figure()
 ax1 = fig.add_subplot(2, 2, 1, projection='3d')
@@ -121,14 +121,14 @@ ax3 = fig.add_subplot(2, 2, 3, projection='3d')
 ax4 = fig.add_subplot(2, 2, 4, projection='3d')
 
 ax1.set_title( 'GMN' )
-ax2.set_title( 'ESN 1000' )
-ax3.set_title( 'ESN 2000' )
-ax4.set_title( 'ESN 3000' )
+ax2.set_title( 'ESN 500' )
+ax3.set_title( 'ESN 1000' )
+ax4.set_title( 'ESN 2000' )
 
 ax1.plot( gmnLorenz['V1'], gmnLorenz['V2'], gmnLorenz['V3'] )
-ax2.plot( esnR1000['V1_'], esnR1000['V2_'], esnR1000['V3_'] )
-ax3.plot( esnR2000['V1_'], esnR2000['V2_'], esnR2000['V3_'] )
-ax4.plot( esnR3000['V1_'], esnR3000['V2_'], esnR3000['V3_'] )
+ax2.plot( esnR500 ['V1_'], esnR500 ['V2_'], esnR500 ['V3_'] )
+ax3.plot( esnR1000['V1_'], esnR1000['V2_'], esnR1000['V3_'] )
+ax4.plot( esnR2000['V1_'], esnR2000['V2_'], esnR2000['V3_'] )
 plt.show()
 ```
 
@@ -144,9 +144,9 @@ import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 
 gmnLorenz = read_csv('GMN/GMN_Lorenz_E3_tau-7_pS_2000_pL_1000.csv')
+esnR500   = read_csv('ESN/ESN_R500_Lorenz3D_pS_2000_pL_1000.csv')
 esnR1000  = read_csv('ESN/ESN_R1000_Lorenz3D_pS_2000_pL_1000.csv')
 esnR2000  = read_csv('ESN/ESN_R2000_Lorenz3D_pS_2000_pL_1000.csv')
-esnR3000  = read_csv('ESN/ESN_R3000_Lorenz3D_pS_2000_pL_1000.csv')
 
 nFFT    = 300
 win     = mlab.window_hanning # mlab.window_none # mlab.window_hanning
@@ -159,12 +159,12 @@ ax0.psd( esnR1000.loc[50:,'V1'], NFFT = nFFT, Fs = fs,
          window = win, noverlap = overlap, label = 'V1', lw = 3 )
 ax0.psd( gmnLorenz.loc[100:,'V1'], NFFT = nFFT, Fs = fs,
          window = win, noverlap = overlap, label = 'GMN', lw = 2 )
+ax0.psd( esnR500.loc[50:,'V1_'], NFFT = nFFT, Fs = fs,
+         window = win, noverlap = overlap, label = 'ESN 500', lw = 2 )
 ax0.psd( esnR1000.loc[50:,'V1_'], NFFT = nFFT, Fs = fs,
          window = win, noverlap = overlap, label = 'ESN 1k', lw = 2 )
 ax0.psd( esnR2000.loc[50:,'V1_'], NFFT = nFFT, Fs = fs,
          window = win, noverlap = overlap, label = 'ESN 2k', lw = 2 )
-ax0.psd( esnR3000.loc[50:,'V1_'], NFFT = nFFT, Fs = fs,
-         window = win, noverlap = overlap, label = 'ESN 3k', lw = 2 )
 ax0.legend()
 plt.show()
 ```
@@ -247,7 +247,7 @@ TS17 TS18 TS19 TS20 TS21 TS22 TS23 TS24 TS25 TS26 TS27 TS28 TS29 TS30 TS31 \
 TS32 TS33 TS34 TS35 TS36 TS37 TS38 TS39 TS40 TS41 TS42 TS43 TS44 TS45 TS46 \
 TS47 TS48 TS49 TS50 TS51 TS52 TS53 TS54 TS55 TS56 TS57 TS58 TS59 TS60 TS61 \
 TS62 TS63 TS64 TS65 TS66 TS67 TS68 TS69 TS70 TS71 TS72 TS73 TS74 TS75 TS76 \
-TS77 TS78 TS79 TS80 FWD -t 1 500 -b 100 -e 601 1000 -R 3000 \
+TS77 TS78 TS79 TS80 FWD -t 1 600 -b 5 -dg 7 -e 600 1000 -R 3000 \
 -o ESN_Fly80_1061.csv -P
 ```
 
@@ -339,7 +339,7 @@ nx.draw( G, with_labels=True, alpha=0.7, font_size=16, node_color='lightgray',
 Run GMN
 ---
 ```
-./RunNoConfig.py -E 7 -tau -7 -pS 1199 -pL 600 -tn head_position_x -nf GMN_RatPosX_EDim_T0.6_CCM_Network.pkl -nd ../data/J16_2021-06-05_epoch_8_1_Hz.csv -do RatJ16_PosX_EDim_T0.6_DataOut.feather -c 10 -PC head_position_x
+./RunNoConfig.py -E 7 -tau -7 -pS 1197 -pL 600 -tn head_position_x -nf GMN_RatPosX_EDim_T0.6_CCM_Network.pkl -nd ../data/J16_2021-06-05_epoch_8_1_Hz.csv -do RatJ16_PosX_EDim_T0.6_DataOut.feather
 ```
 
 Plot observed and generated `head_position_x`
