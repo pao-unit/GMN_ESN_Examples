@@ -447,11 +447,11 @@ df_ = concat( [ data_.reset_index(drop=True),
 from pyEDM import ComputeError
 errD = {}
 err = ComputeError(df_['OT'], df_['GMN_OT'])
-errD[0] = f'rho {err['rho']:.2f}  RMSE {err['RMSE']:.2f}  MAE {err['MAE']:.1f}  CAE {err['CAE']:.1f}'
+errD[0] = f'rho {err['rho']:.2f}  RMSE {err['RMSE']:.2f}  CAE {err['CAE']:.1f}'
 err = ComputeError(df_['MUFL'], df_['GMN_MUFL'])
-errD[1] = f'rho {err['rho']:.2f}  RMSE {err['RMSE']:.2f}  MAE {err['MAE']:.1f}  CAE {err['CAE']:.1f}'
+errD[1] = f'rho {err['rho']:.2f}  RMSE {err['RMSE']:.2f}  CAE {err['CAE']:.1f}'
 err = ComputeError(df_['HULL'], df_['GMN_HULL'])
-errD[2] = f'rho {err['rho']:.2f}  RMSE {err['RMSE']:.2f}  MAE {err['MAE']:.1f}  CAE {err['CAE']:.1f}'
+errD[2] = f'rho {err['rho']:.2f}  RMSE {err['RMSE']:.2f}  CAE {err['CAE']:.1f}'
 
 fig,axs = plt.subplots(nrows = 3, ncols = 1, sharex = True,
                        tight_layout = True, figsize = (6,6.5) )
@@ -486,31 +486,41 @@ cd Crossformer_ETTh1_il720_ol720_sl24_win2_fa10_dm256_nh4_el3_itr4
 
 Crossfomer result stored here in local Crossformer/
 ```python
-# Plot Crossformer results i=13700,14420
-df = read_csv('dfx0_ETTh1_il720_ol720.csv')
+# Plot Crossformer results : rows 11520:12240 of ETTh1
+df = read_csv('dfx0_ETTh1_il720_ol720.csv', index_col = 0)
 
 # Observed data
 data = read_csv('../data/ETTh1.csv')
 
+# Crossformer standardises every column with a StandardScaler fit on the
+# ETTh1 train split (the first 8640 rows) : x_scaled = (x - mu) / sigma.
+# Both the observed (OT, MUFL...) and predicted (xform_*) columns of df are
+# in that scaled space.  Invert it to recover the original units so RMSE and
+# CAE are directly comparable to GMN, whose predictions are observed
+# amplitudes.  Since the transform is affine, |err| scales by sigma alone.
+columns = ['HUFL','HULL','MUFL','MULL','LUFL','LULL','OT']
+train   = data.loc[ :8639, columns ]
+mu      = train.mean()
+sigma   = train.std( ddof = 0 )  # sklearn StandardScaler uses ddof = 0
+
 # Error strings
 from pyEDM import ComputeError
-def ErrString( data, data_scaled, pred ) :
-    '''Crossformer scales the data : predictions'''
-    dataRange       = data.max() - data.min()
-    dataScaledRange = data_scaled.max() - data_scaled.min()
-    scale           = dataRange / dataScaledRange
-    err             = ComputeError( data_scaled, pred )
-    errStr = f"rho {err['rho']:.2f}  RMSE {scale * err['RMSE']:.2f}  " +\
-             f"MAE {scale * err['MAE']:.1f}  CAE {scale * err['CAE']:.1f}"
+def ErrString( column ) :
+    '''Un-scale Crossformer observed : predictions, then compute error'''
+    obs  = df[ column ]            * sigma[ column ] + mu[ column ]
+    pred = df[ 'xform_' + column ] * sigma[ column ] + mu[ column ]
+    err  = ComputeError( obs.values, pred.values )
+    errStr = f"rho {err['rho']:.2f}  RMSE {err['RMSE']:.2f}  " +\
+             f"CAE {err['CAE']:.1f}"
     return errStr
 
-# To compare RMSE MAE CAE with GMN where predictions are actual observed
-# amplitudes, scale the difference metrics to the observed data range
 errD = {}
-errD[0] = ErrString( data['OT'],   df['OT'],   df['xform_OT'] )
-errD[1] = ErrString( data['MUFL'], df['MUFL'], df['xform_MUFL'] )
-errD[2] = ErrString( data['HULL'], df['HULL'], df['xform_HULL'] )
+errD[0] = ErrString( 'OT'   )
+errD[1] = ErrString( 'MUFL' )
+errD[2] = ErrString( 'HULL' )
 
+# Plot the Crossformer output as-is, in the scaled space it is returned in.
+# Only the error metrics are un-scaled, for comparison against GMN.
 fig,axs = plt.subplots(nrows = len(errD), ncols = 1, sharex = True,
                        tight_layout = True, figsize = (6,6.5) )
 df.plot(y=['OT','xform_OT'],    lw=2,ax=axs[0])
@@ -518,7 +528,6 @@ df.plot(y=['MUFL','xform_MUFL'],lw=2,ax=axs[1])
 df.plot(y=['HULL','xform_HULL'],lw=2,ax=axs[2])
 
 for i, ax in enumerate( axs ) :
-    #ax.text( 0.3, 0.02, errD[i], transform = ax.transAxes, fontsize = 12 )
     ax.text( 0.2, 0.88, errD[i], transform=ax.transAxes, fontsize=12,
              bbox = dict(facecolor='white', linewidth=0,  alpha=1.0) )
     ax.tick_params(axis='both', labelsize=10)
